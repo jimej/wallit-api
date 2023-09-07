@@ -8,6 +8,7 @@ diesel::table! {
         created_at -> Nullable<Timestamp>,
         last_modified -> Timestamp,
         rowid -> Int8,
+        team -> Nullable<Bool>,
     }
 }
 
@@ -56,9 +57,19 @@ diesel::table! {
     }
 }
 
+diesel::table! {
+    users_teams (user_id, team_id) {
+        id -> Nullable<Uuid>,
+        user_id -> Uuid,
+        team_id -> Uuid,
+        permission -> Varchar,
+    }
+}
+
 diesel::allow_tables_to_appear_in_same_query!(
     groups,
     history,
     logins,
     users,
+    users_teams,
 );

@@ -1,0 +1,2 @@
+ALTER TABLE groups DROP COLUMN team;
+DROP TABLE IF EXISTS users_teams;
