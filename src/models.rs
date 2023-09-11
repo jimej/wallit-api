@@ -14,5 +14,4 @@ pub struct User {
      last_name: String,
     pub created_at: Option<NaiveDateTime>,
     pub last_modified: NaiveDateTime,
-    pub rowid: i64,
 }
