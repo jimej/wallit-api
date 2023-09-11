@@ -44,8 +44,8 @@ async fn add_user(State(pool): State<ConnectionPool>) {
     let millis = now.duration_since(UNIX_EPOCH).unwrap().as_millis();
     let last = NaiveDateTime::from_timestamp_millis(millis as i64);
     let records = [(
-        username.eq("user2"),
-        email.eq("user2@example.gmail.com"),
+        username.eq("user3"),
+        email.eq("user3@example.gmail.com"),
         first_name.eq("First"),
         last_name.eq("Last"),
         last_modified.eq(last.unwrap()),
