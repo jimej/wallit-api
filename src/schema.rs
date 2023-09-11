@@ -2,7 +2,7 @@
 
 diesel::table! {
     groups (rowid) {
-        id -> Nullable<Uuid>,
+        id -> Uuid,
         group_name -> Varchar,
         user_id -> Uuid,
         created_at -> Nullable<Timestamp>,
@@ -14,7 +14,7 @@ diesel::table! {
 
 diesel::table! {
     history (rowid) {
-        id -> Nullable<Uuid>,
+        id -> Uuid,
         group_id -> Uuid,
         cname -> Varchar,
         url -> Nullable<Text>,
@@ -30,7 +30,7 @@ diesel::table! {
 
 diesel::table! {
     logins (rowid) {
-        id -> Nullable<Uuid>,
+        id -> Uuid,
         group_id -> Uuid,
         cname -> Varchar,
         url -> Nullable<Text>,
@@ -46,7 +46,7 @@ diesel::table! {
 
 diesel::table! {
     users (rowid) {
-        id -> Nullable<Uuid>,
+        id -> Uuid,
         username -> Varchar,
         email -> Varchar,
         first_name -> Varchar,
@@ -59,17 +59,11 @@ diesel::table! {
 
 diesel::table! {
     users_teams (user_id, team_id) {
-        id -> Nullable<Uuid>,
+        id -> Uuid,
         user_id -> Uuid,
         team_id -> Uuid,
         permission -> Varchar,
     }
 }
 
-diesel::allow_tables_to_appear_in_same_query!(
-    groups,
-    history,
-    logins,
-    users,
-    users_teams,
-);
+diesel::allow_tables_to_appear_in_same_query!(groups, history, logins, users, users_teams,);
