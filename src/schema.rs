@@ -45,7 +45,7 @@ diesel::table! {
 }
 
 diesel::table! {
-    users (rowid) {
+    users (id) {
         id -> Uuid,
         username -> Varchar,
         email -> Varchar,
@@ -53,7 +53,7 @@ diesel::table! {
         last_name -> Varchar,
         created_at -> Nullable<Timestamp>,
         last_modified -> Timestamp,
-        rowid -> Int8,
+        // rowid -> Int8,
     }
 }
 
