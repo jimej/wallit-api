@@ -1,0 +1,2 @@
+ALTER TABLE history ALTER COLUMN group_id DROP NOT NULL;
+ALTER TABLE history ADD COLUMN user_id uuid CONSTRAINT fk_user_id REFERENCES users(id) ON DELETE CASCADE;

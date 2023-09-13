@@ -7,15 +7,14 @@ diesel::table! {
         user_id -> Uuid,
         created_at -> Nullable<Timestamp>,
         last_modified -> Timestamp,
-        // rowid -> Int8,
-        team -> Nullable<Bool>,
+        team -> Bool,
     }
 }
 
 diesel::table! {
-    history (rowid) {
+    history (id) {
         id -> Uuid,
-        group_id -> Uuid,
+        group_id -> Nullable<Uuid>,
         cname -> Varchar,
         url -> Nullable<Text>,
         login -> Text,
@@ -24,14 +23,14 @@ diesel::table! {
         description -> Nullable<Text>,
         mode -> Varchar,
         created_at -> Nullable<Timestamp>,
-        rowid -> Int8,
+        user_id -> Nullable<Uuid>,
     }
 }
 
 diesel::table! {
     logins (id) {
         id -> Uuid,
-        group_id -> Uuid,
+        group_id -> Nullable<Uuid>,
         cname -> Varchar,
         url -> Nullable<Text>,
         login -> Text,
@@ -40,7 +39,7 @@ diesel::table! {
         description -> Nullable<Text>,
         created_at -> Nullable<Timestamp>,
         last_modified -> Timestamp,
-        // rowid -> Int8,
+        user_id -> Nullable<Uuid>,
     }
 }
 
@@ -53,7 +52,6 @@ diesel::table! {
         last_name -> Varchar,
         created_at -> Nullable<Timestamp>,
         last_modified -> Timestamp,
-        // rowid -> Int8,
     }
 }
 
@@ -66,4 +64,13 @@ diesel::table! {
     }
 }
 
-diesel::allow_tables_to_appear_in_same_query!(groups, history, logins, users, users_teams,);
+diesel::joinable!(users_teams -> groups (team_id));
+diesel::joinable!(users_teams -> users (user_id));
+
+diesel::allow_tables_to_appear_in_same_query!(
+    groups,
+    history,
+    logins,
+    users,
+    users_teams,
+);
