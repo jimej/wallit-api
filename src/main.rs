@@ -13,6 +13,7 @@ use wallit_api::get_connection_pool;
 // use models::*;
 mod models;
 mod schema;
+mod dbaccess;
 
 use chrono::NaiveDateTime;
 

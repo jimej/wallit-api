@@ -1,13 +1,13 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
-    groups (rowid) {
+    groups (id) {
         id -> Uuid,
         group_name -> Varchar,
         user_id -> Uuid,
         created_at -> Nullable<Timestamp>,
         last_modified -> Timestamp,
-        rowid -> Int8,
+        // rowid -> Int8,
         team -> Nullable<Bool>,
     }
 }
@@ -29,7 +29,7 @@ diesel::table! {
 }
 
 diesel::table! {
-    logins (rowid) {
+    logins (id) {
         id -> Uuid,
         group_id -> Uuid,
         cname -> Varchar,
@@ -40,7 +40,7 @@ diesel::table! {
         description -> Nullable<Text>,
         created_at -> Nullable<Timestamp>,
         last_modified -> Timestamp,
-        rowid -> Int8,
+        // rowid -> Int8,
     }
 }
 
