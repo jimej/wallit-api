@@ -3,8 +3,9 @@ use chrono::NaiveDateTime;
 use diesel::prelude::{Insertable, Queryable, Associations, Identifiable};
 // use diesel::prelude::*;
 use uuid::Uuid;
+use serde::Deserialize;
 
-#[derive(Queryable, Insertable)]
+#[derive(Queryable, Insertable, Deserialize)] // NaiveDateTime needs chrono serde feature to serialize
 #[diesel(belongs_to(User))]
 #[diesel(belongs_to(Group))]
 #[diesel(table_name = logins)]

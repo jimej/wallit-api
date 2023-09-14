@@ -3,6 +3,8 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use axum::{
     extract::State,
     routing::{get, post},
+    response::IntoResponse,
+    Json,
     Router,
 };
 use diesel::pg::PgConnection;
@@ -28,7 +30,7 @@ async fn main() {
         .route("/", get(|| async { "hello world" }))
         .route("/user", get(get_user))
         .route("/add", get(add_user))
-        .route("/ilogin", get(add_login))
+        .route("/ilogin", get(add_login).post(post_login),)
         .with_state(pool); // with_state at last step
 
     axum::Server::bind(&addr) // or bind(&"127.0.0.1:8030".parse().unwrap())
@@ -83,6 +85,26 @@ async fn add_login(State(pool): State<ConnectionPool>) {
 
     dbaccess::users::add_login(login, &mut conn);
    
+}
+/* testing json:  // kreya project at x/kreya/wallitapi
+{
+  "cname": "figma",
+  "url": "https://www.figma.com",
+  "login": "worktogether",
+  "password": "kv2nPr$ig-e7aj",
+  "email": "user3@example4.gmail.com",
+  "user_id": "c1ff39af-eb86-456e-a5b4-cab807ef2f00",
+  "last_modified": "2023-09-14T07:22:50"
+}*/ //last_modified should be optional, so user doesn't have to enter, only added by code, therefore should be Option<NaiveDateTime>
+// the order of the arguments matters
+async fn post_login( State(pool): State<ConnectionPool>, Json(body): Json<dbaccess::models::Login>) -> impl IntoResponse {
+    let mut conn = pool.get().unwrap();
+    dbaccess::users::add_login(&body, &mut conn);
+    let resp = serde_json::json!({
+         "status": "success",
+         "message": "a login has been added",   
+    });
+    Json(resp)
 }
 
 async fn get_user(State(pool): State<ConnectionPool>) -> &'static str {
