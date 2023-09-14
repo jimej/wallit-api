@@ -72,11 +72,11 @@ async fn add_login(State(pool): State<ConnectionPool>) {
     let millis = now.duration_since(UNIX_EPOCH).unwrap().as_millis();
     let last = NaiveDateTime::from_timestamp_millis(millis as i64);
     let login = &dbaccess::models::Login {
-        last_modified: last.unwrap(),
+        last_modified: Some(last.unwrap()),
         group_id: None,
         cname: "user3".to_owned(),
         url: None,
-        description: None,
+        description: Some("same cname and email".to_string()),
         login: "user3_login".to_owned(),
         password: "vniw5Eg$rq-3A".to_owned(),
         email: "user3@example2.gmail.com".to_owned(),
@@ -93,12 +93,15 @@ async fn add_login(State(pool): State<ConnectionPool>) {
   "login": "worktogether",
   "password": "kv2nPr$ig-e7aj",
   "email": "user3@example4.gmail.com",
-  "user_id": "c1ff39af-eb86-456e-a5b4-cab807ef2f00",
-  "last_modified": "2023-09-14T07:22:50"
-}*/ //last_modified should be optional, so user doesn't have to enter, only added by code, therefore should be Option<NaiveDateTime>
+  "user_id": "c1ff39af-eb86-456e-a5b4-cab807ef2f00"
+}*/ //last_modified changed to optional
 // the order of the arguments matters
-async fn post_login( State(pool): State<ConnectionPool>, Json(body): Json<dbaccess::models::Login>) -> impl IntoResponse {
+async fn post_login( State(pool): State<ConnectionPool>, Json(mut body): Json<dbaccess::models::Login>) -> impl IntoResponse {
     let mut conn = pool.get().unwrap();
+    let now = SystemTime::now();
+    let millis = now.duration_since(UNIX_EPOCH).unwrap().as_millis();
+    let last = NaiveDateTime::from_timestamp_millis(millis as i64);
+    body.last_modified = last;
     dbaccess::users::add_login(&body, &mut conn);
     let resp = serde_json::json!({
          "status": "success",
@@ -111,10 +114,9 @@ async fn get_user(State(pool): State<ConnectionPool>) -> &'static str {
     let mut conn = pool.get().unwrap();
     use schema::users::dsl::*;
     let results = users
-        // .filter(published.eq(true))
         .limit(5)
         .load::<models::User>(&mut conn)
-        .expect("Error loading posts");
+        .expect("Error loading users");
     for u in results {
         println!(
             "{} {} {:?} {:?}  ",

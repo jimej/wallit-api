@@ -1,0 +1,1 @@
+DROP INDEX history@history_email_key CASCADE;

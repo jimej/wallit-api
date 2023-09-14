@@ -19,7 +19,7 @@ pub struct Login {
     pub email: String,
     pub description: Option<String>,
     // pub created_at: Option<NaiveDateTime>,
-    pub last_modified: NaiveDateTime,
+    pub last_modified: Option<NaiveDateTime>,
     pub user_id: Option<Uuid>,
 }
 
@@ -32,7 +32,7 @@ pub struct Group {
   user_id: Uuid,
   team: bool,
   pub created_at: Option<NaiveDateTime>,
-  pub last_modified: NaiveDateTime,
+  pub last_modified: Option<NaiveDateTime>,
 }
 
 #[derive(Queryable, Insertable)]
@@ -44,5 +44,5 @@ pub struct User {
      first_name: String,
      last_name: String,
     pub created_at: Option<NaiveDateTime>,
-    pub last_modified: NaiveDateTime,
+    pub last_modified: Option<NaiveDateTime>,
 }

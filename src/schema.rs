@@ -6,7 +6,7 @@ diesel::table! {
         group_name -> Varchar,
         user_id -> Uuid,
         created_at -> Nullable<Timestamp>,
-        last_modified -> Timestamp,
+        last_modified -> Nullable<Timestamp>,
         team -> Bool,
     }
 }
@@ -38,7 +38,7 @@ diesel::table! {
         email -> Varchar,
         description -> Nullable<Text>,
         created_at -> Nullable<Timestamp>,
-        last_modified -> Timestamp,
+        last_modified -> Nullable<Timestamp>,
         user_id -> Nullable<Uuid>,
     }
 }
@@ -51,7 +51,7 @@ diesel::table! {
         first_name -> Varchar,
         last_name -> Varchar,
         created_at -> Nullable<Timestamp>,
-        last_modified -> Timestamp,
+        last_modified -> Nullable<Timestamp>,
     }
 }
 

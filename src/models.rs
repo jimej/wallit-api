@@ -13,5 +13,5 @@ pub struct User {
      first_name: String,
      last_name: String,
     pub created_at: Option<NaiveDateTime>,
-    pub last_modified: NaiveDateTime,
+    pub last_modified: Option<NaiveDateTime>,
 }
