@@ -16,6 +16,7 @@ mod schema;
 mod dbaccess;
 
 use chrono::NaiveDateTime;
+use uuid::uuid;
 
 #[tokio::main]
 async fn main() {
@@ -27,6 +28,7 @@ async fn main() {
         .route("/", get(|| async { "hello world" }))
         .route("/user", get(get_user))
         .route("/add", get(add_user))
+        .route("/ilogin", get(add_login))
         .with_state(pool); // with_state at last step
 
     axum::Server::bind(&addr) // or bind(&"127.0.0.1:8030".parse().unwrap())
@@ -45,8 +47,8 @@ async fn add_user(State(pool): State<ConnectionPool>) {
     let millis = now.duration_since(UNIX_EPOCH).unwrap().as_millis();
     let last = NaiveDateTime::from_timestamp_millis(millis as i64);
     let records = [(
-        username.eq("user4"),
-        email.eq("user4@example.gmail.com"),
+        username.eq("user5"),
+        email.eq("user5@example.gmail.com"),
         first_name.eq("First"),
         last_name.eq("Last"),
         last_modified.eq(last.unwrap()),
@@ -59,6 +61,28 @@ async fn add_user(State(pool): State<ConnectionPool>) {
         Ok(_) => println!("great!!!!"),
     }
 
+}
+
+async fn add_login(State(pool): State<ConnectionPool>) {
+    let mut conn = pool.get().unwrap();
+
+    let now = SystemTime::now();
+    let millis = now.duration_since(UNIX_EPOCH).unwrap().as_millis();
+    let last = NaiveDateTime::from_timestamp_millis(millis as i64);
+    let login = &dbaccess::models::Login {
+        last_modified: last.unwrap(),
+        group_id: None,
+        cname: "user3".to_owned(),
+        url: None,
+        description: None,
+        login: "user3_login".to_owned(),
+        password: "vniw5Eg$rq-3A".to_owned(),
+        email: "user3@example2.gmail.com".to_owned(),
+        user_id: Some(uuid!("c1ff39af-eb86-456e-a5b4-cab807ef2f00")),
+    };
+
+    dbaccess::users::add_login(login, &mut conn);
+   
 }
 
 async fn get_user(State(pool): State<ConnectionPool>) -> &'static str {

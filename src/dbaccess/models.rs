@@ -5,21 +5,21 @@ use diesel::prelude::{Insertable, Queryable, Associations, Identifiable};
 use uuid::Uuid;
 
 #[derive(Queryable, Insertable)]
-// #[diesel(belongs_to(User))]
+#[diesel(belongs_to(User))]
 #[diesel(belongs_to(Group))]
 #[diesel(table_name = logins)]
 pub struct Login {
-    pub id: Uuid,
-    pub group_id: Uuid,   // this should be Option<Uuid> indicating default_group
-    cname: String,
-    url: Option<String>,
-    login: String,
-    password: String,
-    email: String,
-    description: String,
-
-    pub created_at: Option<NaiveDateTime>,
+    // pub id: Uuid,
+    pub group_id: Option<Uuid>,   // this should be Option<Uuid> indicating default_group
+    pub cname: String,
+    pub url: Option<String>,
+    pub login: String,
+    pub password: String,
+    pub email: String,
+    pub description: Option<String>,
+    // pub created_at: Option<NaiveDateTime>,
     pub last_modified: NaiveDateTime,
+    pub user_id: Option<Uuid>,
 }
 
 #[derive(Queryable, Insertable)]
